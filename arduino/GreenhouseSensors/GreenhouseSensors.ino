@@ -3,78 +3,72 @@
  * 
  * Written by Keith M. Hughes
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
  */
- 
-#include <Wire.h>
+
+// CHange to Wire.h if not using the Teensy.
+#include <i2c_t3.h>
+
 #include <Adafruit_AM2315.h>
 #include <Adafruit_MPL3115A2.h>
 
 // The inside AM2315 temperature and humidity sensor.
-Adafruit_AM2315 am2315Inside(&Wire);
+Adafruit_AM2315 am2315Inside(&Wire1);
 
-// The barametric pressure sensor.
-// This is on the indoor I2C bus.
-Adafruit_MPL3115A2 barometric(&Wire);
+Adafruit_MPL3115A2 barometric(&Wire1);
 
 
 // The outside AM2315 temperature and humidity sensor.
-Adafruit_AM2315 am2315Outside(&Wire1);
+Adafruit_AM2315 am2315Outside(&Wire);
 
 // The sensor data packet containing all data to be transmitted
 // to the host.
-typedef struct {
+typedef struct _SenseData {
   float temperatureInside;
   float humidityInside;
   float temperatureOutside;
   float humidityOutside;
-  int windSpeed;
-} SenseData;
+  float altitude;
+  float barometricPressure;
+  float barometicTemp;
+} SenseData;;
 
 SenseData senseData;
 
 void setup() {
   Serial.begin(9600);
-
-  if (! am2315Outside.begin()) {
-     Serial.println("Outside AM2315 sensor not found, check wiring & pullups!");
-     while (1);
-  }
-
-  if (! am2315Inside.begin()) {
-     Serial.println("Inside AM2315 sensor not found, check wiring & pullups!");
-     while (1);
-  }
-  
-  // TODO(keith): initialize barametric sensors
 }
 
 void loop() {
-  am2315Outside.readTemperatureAndHumidity(senseData.temperatureOutside, senseData.humidityOutside);
-  am2315Inside.readTemperatureAndHumidity(senseData.temperatureInside, senseData.humidityInside);
+ if (am2315Outside.begin()) {
+    am2315Outside.readTemperatureAndHumidity(senseData.temperatureOutside, senseData.humidityOutside);
+    Serial.print("Outside Hum: "); Serial.println(senseData.humidityOutside);
+    Serial.print("Outside Temp: "); Serial.println(senseData.temperatureOutside);
+  } else {
+    Serial.println("Cannot see outside AM2315");
+  }
 
-  senseData.windSpeed = analogRead(0);
-  
-  // TODO(keith): Remove when sending data to host
-  Serial.print("Outside Hum: "); Serial.println(senseData.humidityOutside);
-  Serial.print("Outside Temp: "); Serial.println(senseData.temperatureOutside);
-  Serial.print("Inside Hum: "); Serial.println(senseData.humidityInside);
-  Serial.print("Inside Temp: "); Serial.println(senseData.temperatureInside);
+  if (am2315Inside.begin()) {
+    am2315Inside.readTemperatureAndHumidity(senseData.temperatureInside, senseData.humidityInside);
+    Serial.print("Inside Hum: "); Serial.println(senseData.humidityInside);
+    Serial.print("Inside Temp: "); Serial.println(senseData.temperatureInside);
+  } else {
+    Serial.println("Cannot see inside AM2315");
+  }
+ 
+  if (barometric.begin()) {
+    senseData.barometricPressure = barometric.getPressure();
+    // Our weather page presents pressure in Inches (Hg)
+    // Use http://www.onlineconversion.com/pressure.htm for other units
+    Serial.print(senseData.barometricPressure/3377); Serial.println(" Inches (Hg)");
 
-  Serial.print("Wind Speed: "); Serial.println(senseData.windSpeed);
-  
-  // TODO(keith): Write data to host computer
-  
-  // TODO(keith): change sample rate to every 5 minutes or so
+    senseData.altitude = barometric.getAltitude();
+    Serial.print(senseData.altitude); Serial.println(" meters");
+
+    senseData.barometicTemp = barometric.getTemperature();
+    Serial.print(senseData.barometicTemp); Serial.println("*C");
+  } else {
+    Serial.println("Couldnt find barametric sensor");
+  }
+
   delay(1000);
 }
