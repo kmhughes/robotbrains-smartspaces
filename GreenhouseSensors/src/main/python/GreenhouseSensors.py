@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 #
 # Read Greenhouse sensor data from an XBee.
 #
