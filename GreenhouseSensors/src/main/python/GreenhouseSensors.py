@@ -16,13 +16,20 @@ import json
 import sys
 import time
 import signal
+import logging
+
+# Set the logging level
+logging.basicConfig(level=logging.INFO)
 
 # 1 if the script should connect to the MQTT broker
 # 0 if the script should not connect to the MQTT broker
-CONNECT = 0
+CONNECT = 1
 
-# 0 if no debug, 1 if debug
-DEBUG = 1
+# This script will read samples every time the radio sends them. The following
+# value gives the number of milliseconds to wait between samples transmitted
+# to the MQTT topic. For example, if the radio is sending samples every 1000
+# milliseconds, the value 10000 will skip 9 samples and send the 10th.
+TIME_INTERVAL_BETWEEN_TRANSMITTED_SAMPLES = 600000
 
 # The source of the data.
 #
@@ -33,10 +40,13 @@ DATA_SOURCE = 'keith.test'
 # The actual sensing unit that is collecting the data.
 #
 # The thought here is that you would have multiple sensing units per data source.
-SENSING_UNIT = 'greenhouse1'
+SENSING_UNIT = 'greenhouse1.test'
 
 # The Baud rate of the XBee
 SERIAL_BAUD_RATE = 9600
+
+# Get the logger.
+logger = logging.getLogger(__name__)
 
 #
 # Various MQTT routines.
@@ -45,8 +55,7 @@ SERIAL_BAUD_RATE = 9600
 # The callback for when the MQTT client gets an acknowledgement from the MQTT
 # broker.
 def on_connect(client, userdata, rc):
-  if DEBUG:
-    print("Connected to message broker with result code "+str(rc))
+  logger.debug("Connected to message broker with result code "+str(rc))
 
 # Signal handler for sigint.
 #
@@ -76,6 +85,7 @@ greenhouse_xbee_address = properties['greenhouse.radio.xbee.addr64']
 serial_port = serial.Serial(serial_port_name, SERIAL_BAUD_RATE)
 
 # Get the sensor offsets to bring into calibration witha "true" value.
+
 greenhouseSensorInsideHumidityOffset = properties['greenhouse.sensor.inside.humidity.offset']
 greenhouseSensorOutsideHumidityOffset = properties['greenhouse.sensor.outside.humidity.offset']
 
@@ -104,6 +114,11 @@ if CONNECT:
   mqttClient.loop_start()
 
 
+# THe timestamp when data was last sent.
+#
+# By setting this to 0, the first packet will go out.
+timestamp_last_sent = 0
+
 # Continuously read and print packets
 while True:
   # Block until an RX frame is received.
@@ -115,6 +130,13 @@ while True:
   # If the data comes from the radio in the greenhouse, print it.
   radio_address = ''.join('%02x' % ord(byte) for byte in frame['source_addr_long'])
   if radio_address == greenhouse_xbee_address:
+    # If too soon for data then don't process this sample
+    if timestamp - timestamp_last_sent < TIME_INTERVAL_BETWEEN_TRANSMITTED_SAMPLES:
+      continue
+
+    # OK, this sample is going to be transmitted.
+    timestamp_last_sent = timestamp
+
     rf_data = frame['rf_data']
 
     # The data is a series of little-endian floats.
@@ -129,14 +151,12 @@ while True:
     inside_humidity = inside_humidity + greenhouseSensorInsideHumidityOffset
     outside_humidity = outside_humidity + greenhouseSensorOutsideHumidityOffset
 
-    if DEBUG:
-      print radio_address
-      print '\tInside: Temperature: ', inside_temperature, 'C Humidity: ', inside_humidity, '%RH'
-      print '\tOutside: Temperature: ', outside_temperature, 'C Humidity: ', outside_humidity, '%RH'
-      print '\tAltitude: ', altitude, 'M Barometric Pressure: ', barometric_pressure, "Pascals"
+    logger.debug(radio_address)
+    logger.debug('\tTimestamp: %d, Date: %s' % (timestamp, time.strftime('%Y/%m/%d@%H:%M:%S', time.gmtime())))
+    logger.debug('\tInside: Temperature: %f C Humidity: %f %%RH' % (inside_temperature, inside_humidity))
+    logger.debug('\tOutside: Temperature: %f C Humidity: %f %%RH' % (outside_temperature, outside_humidity))
+    logger.debug('\tAltitude: %f M Barometric Pressure: %f Pascals' % (altitude, barometric_pressure))
 
-  # Write data to the MQTT broker if supposed to.
-  if 1:
     message = {
       'type': 'data.sensor',
       'data': {
@@ -172,5 +192,6 @@ while True:
         }
       }
 
-    print json.dumps(message)
-    # mqttClient.publish(topicOutgoing, json.dumps(message))
+    # Write data to the MQTT broker if supposed to.
+    if CONNECT:
+      mqttClient.publish(topicOutgoing, json.dumps(message))
