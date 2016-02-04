@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<project type="activity" builder="java">
+  <name>XBee Coordinator Radio IMU</name>
+  <description>
+    Listen to an XBee Coorindator radio and pick up IMU data.
+  </description>
+
+  <identifyingName>org.robotbrains.comm.xbee.coordinator.imu</identifyingName>
+  <version>1.0.0</version>
+
+  <activity type="smartspaces_native">
+    <name>interactivespacesExampleCommXbeeCoordinator</name>
+    <class>org.robotbrains.comm.xbee.coordinator.imu.XBeeCoordinatorImuActivity</class>
+
+    <configuration>
+      <property name="space.hardware.serial.port" required="true">
+        <description>
+          The serial port the XBee is connected to.
+        </description>
+      </property>
+
+      <property name="space.activity.log.level" value="info" />
+
+    </configuration>
+  </activity>
+</project>

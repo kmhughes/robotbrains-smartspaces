@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<project type="activity" builder="java">
+	<name>Open Sound Control Routable That Controls SuperCollider</name>
+	<description>
+		An Open Sound Control example for working with
+		SuperCollider. Frequency
+		and volume are controlled from a route.
+	</description>
+
+	<identifyingName>
+		org.robotbrains.opensoundcontrol.routable.supercollider
+	</identifyingName>
+	<version>1.0.0</version>
+
+	<activity type="smartspaces_native">
+		<name>orgRobotBrainsOpenSoundControlRoutableSuperCollider</name>
+		<class>
+			org.robotbrains.opensoundcontrol.routable.supercollider.activity.SuperColliderOpenSoundControlRoutableActivity
+		</class>
+
+		<configuration>
+			<property name="space.activity.log.level" value="info" />
+
+			<property name="space.activity.ros.node.name" required="true">
+				<value>example/routable/input/osc</value>
+			</property>
+			<property name="space.activity.routes.inputs" value="signal"
+				required="true" />
+			<property name="space.activity.route.input.signal" required="true">
+				<value>/example/routable/signal/analog</value>
+			</property>
+
+			<property name="space.activity.supercollider.server.host"
+				value="127.0.0.1" required="true">
+				<description>
+					The host which contains the Supercollider server which
+					is being controlled by this activity.
+				</description>
+			</property>
+
+			<property name="osc.signal.multiplier" value="220">
+				<description>
+					The values from the analog signal will be multiplied by
+					this value
+					before being
+					sent over to the Supercollider synth.
+				</description>
+			</property>
+			<property name="osc.frequency.base" value="440">
+				<description>
+					This value will be added post multiplication by the
+					signal multiplier
+					before
+					being sent over to the Supercollider synth.
+				</description>
+			</property>
+			<property name="analog.max" value="512">
+				<description>
+					The maximum value we expect the analog signal to reach.
+					The signal
+					will be
+					divided by this value
+					before starting the
+					Supercollider
+					calculations.
+				</description>
+			</property>
+		</configuration>
+	</activity>
+</project>

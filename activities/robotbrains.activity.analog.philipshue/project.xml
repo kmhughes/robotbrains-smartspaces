@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<project type="activity" builder="java">
+	<name>Philips Hue Over Analog Route</name>
+	<description>
+		Turn a Philips Hue on and off using an analog signal over
+		a route.
+	</description>
+
+	<identifyingName>
+		robotbrains.activity.analog.philipshue
+	</identifyingName>
+	<version>1.0.0</version>
+
+	<activity type="smartspaces_native">
+		<name>robotbrainsAnalogPhilipsHue</name>
+		<class>
+			robotbrains.activity.analog.philipshue.PhilipsHueAnalogTriggerActivity
+		</class>
+
+		<configuration>
+			<property name="space.activity.ros.node.name" required="true">
+				<value>example/routable/input/philipshue</value>
+			</property>
+			<property name="space.activity.routes.inputs" value="signal"
+				required="true" />
+			<property name="space.activity.route.input.signal" required="true">
+				<value>/example/routable/signal/analog</value>
+			</property>
+
+			<property name="space.activity.philipshue.server.host"
+				value="192.168.199.10" required="true">
+				<description>
+					The host which contains the Philips Hue hub.
+				</description>
+			</property>
+
+			<property name="space.activity.philipshue.hub.user" value="newdeveloper"
+				required="true">
+				<description>
+					The hub user for the Philips Hue hub.
+				</description>
+			</property>
+
+			<property name="activity.example.arduino.analog.trigger.threshold"
+				value="80">
+				<description>
+					The value read from the Arduino that is necessary for
+					the trigger to
+					go off.
+				</description>
+			</property>
+			<property name="activity.example.arduino.analog.trigger.fuzz"
+				value="20">
+				<description>
+					The amount below the trigger value that the value read
+					from the
+					Arduino must go before the trigger
+					is reset.
+				</description>
+			</property>
+
+			<property name="space.activity.log.level" value="info" />
+		</configuration>
+	</activity>
+
+	<dependencies>
+		<dependency identifyingName="org.robotbrains.smartspaces.support"
+			version="[1.0.0, 1.1.0)" dynamic="true" />
+	</dependencies>
+</project>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<project type="library" builder="java">
+  <name>RobotBrains Smart Spaces Support</name>
+  <description>
+    A collection of support for Smart Spaces projects at RobotBrains.
+  </description>
+
+  <identifyingName>org.robotbrains.smartspaces.support</identifyingName>
+  <version>1.0.0</version>
+  
+  <library>
+    <container>
+      <activator>
+        org.robotbrains.support.internal.osgi.RobotBrainsSupportActivator
+      </activator>
+    </container>
+  </library>
+</project>
