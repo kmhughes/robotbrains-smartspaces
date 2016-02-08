@@ -17,7 +17,6 @@
 package org.robotbrains.support.internal.osgi;
 
 import io.smartspaces.osgi.service.SmartSpacesServiceOsgiBundleActivator;
-import io.smartspaces.sandbox.service.hardware.philipshue.internal.StandardPhilipsHueEndpointService;
 
 /**
  * Bundle activator for Robotbrains support library.
@@ -27,6 +26,5 @@ import io.smartspaces.sandbox.service.hardware.philipshue.internal.StandardPhili
 public class RobotBrainsSupportActivator extends SmartSpacesServiceOsgiBundleActivator {
   @Override
   protected void allRequiredServicesAvailable() {
-    registerNewSmartSpacesService(new StandardPhilipsHueEndpointService());
   }
 }
