@@ -14,8 +14,16 @@
  * the License.
  */
 
-package org.robotbrains.interactivespaces.service.hardware.philipshue.internal;
+package io.smartspaces.sandbox.service.hardware.philipshue.internal;
 
+import io.smartspaces.sandbox.service.action.ActionService;
+import io.smartspaces.sandbox.service.action.ActionSource;
+import io.smartspaces.sandbox.service.action.internal.StandardActionService;
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueEndpoint;
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueEndpointService;
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueLight;
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueRestMessages;
+import io.smartspaces.service.web.HttpClientRestWebClient;
 import io.smartspaces.system.SmartSpacesEnvironment;
 import io.smartspaces.system.StandaloneSmartSpacesEnvironment;
 import io.smartspaces.util.SmartSpacesUtilities;
@@ -30,14 +38,6 @@ import io.smartspaces.util.data.json.StandardJsonMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.logging.Log;
-import org.robotbrains.interactivespaces.service.action.internal.StandardActionService;
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueEndpoint;
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueEndpointService;
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueLight;
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueRestMessages;
-import org.robotbrains.interactivespaces.service.web.HttpClientRestWebClient;
-import org.robotbrains.smartspaces.service.action.ActionService;
-import org.robotbrains.smartspaces.service.action.ActionSource;
 
 import java.util.List;
 import java.util.Map;

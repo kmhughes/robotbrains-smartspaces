@@ -14,11 +14,10 @@
  * the License.
  */
 
-package org.robotbrains.interactivespaces.service.hardware.philipshue;
+package io.smartspaces.sandbox.service.hardware.philipshue;
 
+import io.smartspaces.sandbox.service.action.ActionSource;
 import io.smartspaces.util.resource.ManagedResource;
-
-import org.robotbrains.smartspaces.service.action.ActionSource;
 
 import java.util.List;
 

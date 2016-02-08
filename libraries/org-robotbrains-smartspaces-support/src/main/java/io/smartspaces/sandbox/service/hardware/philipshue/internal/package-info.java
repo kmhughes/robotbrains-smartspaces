@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Keith M. Hughes
+ * Copyright (C) 2014 Keith M. Hughes.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -14,22 +14,8 @@
  * the License.
  */
 
-package org.robotbrains.smartspaces.service.action;
-
 /**
- * A handler for actions.
- * 
- * @author Keith M. Hughes
+ * @author keith
+ *
  */
-public interface ActionSource {
-
-  /**
-   * Add in an action.
-   * 
-   * @param actionName
-   *          the name of the action
-   * 
-   * @return the action to perform
-   */
-  Action getAction(String actionName);
-}
+package io.smartspaces.sandbox.service.hardware.philipshue.internal;

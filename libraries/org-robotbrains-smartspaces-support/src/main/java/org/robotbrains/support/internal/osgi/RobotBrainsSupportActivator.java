@@ -17,10 +17,7 @@
 package org.robotbrains.support.internal.osgi;
 
 import io.smartspaces.osgi.service.SmartSpacesServiceOsgiBundleActivator;
-
-import org.robotbrains.interactivespaces.service.action.internal.StandardActionService;
-import org.robotbrains.interactivespaces.service.hardware.philipshue.internal.StandardPhilipsHueEndpointService;
-import org.robotbrains.interactivespaces.service.scheduler.action.internal.quartz.QuartzActionSchedulerService;
+import io.smartspaces.sandbox.service.hardware.philipshue.internal.StandardPhilipsHueEndpointService;
 
 /**
  * Bundle activator for Robotbrains support library.
@@ -30,8 +27,6 @@ import org.robotbrains.interactivespaces.service.scheduler.action.internal.quart
 public class RobotBrainsSupportActivator extends SmartSpacesServiceOsgiBundleActivator {
   @Override
   protected void allRequiredServicesAvailable() {
-    registerNewSmartSpacesService(new StandardActionService());
     registerNewSmartSpacesService(new StandardPhilipsHueEndpointService());
-    registerNewSmartSpacesService(new QuartzActionSchedulerService());
   }
 }

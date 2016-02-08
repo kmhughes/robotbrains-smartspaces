@@ -14,7 +14,7 @@
  * the License.
  */
 
-package org.robotbrains.interactivespaces.service.hardware.philipshue;
+package io.smartspaces.sandbox.service.hardware.philipshue;
 
 import io.smartspaces.service.SupportedService;
 

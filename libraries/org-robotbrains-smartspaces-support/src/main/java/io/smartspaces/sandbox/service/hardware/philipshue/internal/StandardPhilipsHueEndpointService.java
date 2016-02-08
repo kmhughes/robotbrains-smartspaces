@@ -14,14 +14,14 @@
  * the License.
  */
 
-package org.robotbrains.interactivespaces.service.hardware.philipshue.internal;
+package io.smartspaces.sandbox.service.hardware.philipshue.internal;
 
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueEndpoint;
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueEndpointService;
 import io.smartspaces.service.BaseSupportedService;
+import io.smartspaces.service.web.HttpClientRestWebClient;
 
 import org.apache.commons.logging.Log;
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueEndpoint;
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueEndpointService;
-import org.robotbrains.interactivespaces.service.web.HttpClientRestWebClient;
 
 /**
  * The standard service for working with Philips Hue lights.

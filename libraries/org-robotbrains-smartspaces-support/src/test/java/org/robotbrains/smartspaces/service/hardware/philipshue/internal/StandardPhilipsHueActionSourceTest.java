@@ -14,17 +14,18 @@
  * the License.
  */
 
-package org.robotbrains.interactivespaces.service.hardware.philipshue.internal;
+package org.robotbrains.smartspaces.service.hardware.philipshue.internal;
 
+import io.smartspaces.sandbox.service.action.Action;
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueEndpoint;
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueLight;
+import io.smartspaces.sandbox.service.hardware.philipshue.internal.StandardPhilipsHueActionSource;
 import io.smartspaces.system.SmartSpacesEnvironment;
 
 import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueEndpoint;
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueLight;
-import org.robotbrains.smartspaces.service.action.Action;
 
 import java.util.Map;
 

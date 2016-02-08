@@ -14,16 +14,15 @@
  * the License.
  */
 
-package org.robotbrains.interactivespaces.service.hardware.philipshue.internal;
+package io.smartspaces.sandbox.service.hardware.philipshue.internal;
 
 import io.smartspaces.SimpleSmartSpacesException;
+import io.smartspaces.sandbox.service.action.Action;
+import io.smartspaces.sandbox.service.action.ActionSource;
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueEndpoint;
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueLight;
 import io.smartspaces.system.SmartSpacesEnvironment;
 import io.smartspaces.util.data.dynamic.StandardDynamicObjectNavigator;
-
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueEndpoint;
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueLight;
-import org.robotbrains.smartspaces.service.action.Action;
-import org.robotbrains.smartspaces.service.action.ActionSource;
 
 import java.util.Map;
 

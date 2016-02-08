@@ -22,10 +22,9 @@ import io.smartspaces.event.trigger.Trigger;
 import io.smartspaces.event.trigger.TriggerEventType;
 import io.smartspaces.event.trigger.TriggerListener;
 import io.smartspaces.event.trigger.TriggerState;
-
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueEndpoint;
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueEndpointService;
-import org.robotbrains.interactivespaces.service.hardware.philipshue.PhilipsHueLight;
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueEndpoint;
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueEndpointService;
+import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueLight;
 
 import java.util.Map;
 
