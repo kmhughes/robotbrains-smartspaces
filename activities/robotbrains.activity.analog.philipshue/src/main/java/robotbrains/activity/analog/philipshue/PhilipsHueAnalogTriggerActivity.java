@@ -16,17 +16,14 @@
 
 package robotbrains.activity.analog.philipshue;
 
+import java.util.Map;
+
 import io.smartspaces.activity.impl.ros.BaseRoutableRosActivity;
 import io.smartspaces.event.trigger.SimpleThresholdTrigger;
 import io.smartspaces.event.trigger.Trigger;
 import io.smartspaces.event.trigger.TriggerEventType;
 import io.smartspaces.event.trigger.TriggerListener;
 import io.smartspaces.event.trigger.TriggerState;
-import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueEndpoint;
-import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueEndpointService;
-import io.smartspaces.sandbox.service.hardware.philipshue.PhilipsHueLight;
-
-import java.util.Map;
 
 /**
  * A Smart Spaces Java-based activity that controls a Philips hue device from a
@@ -91,9 +88,8 @@ public class PhilipsHueAnalogTriggerActivity extends BaseRoutableRosActivity {
     String philipsHueHubUser =
         getConfiguration().getRequiredPropertyString(CONFIGURATION_PROPERTY_PHILIPSHUE_HUB_USER);
 
-    PhilipsHueEndpointService service =
-        getSpaceEnvironment().getServiceRegistry().getRequiredService(
-            PhilipsHueEndpointService.SERVICE_NAME);
+    PhilipsHueEndpointService service = getSpaceEnvironment().getServiceRegistry()
+        .getRequiredService(PhilipsHueEndpointService.SERVICE_NAME);
     philipsHueHubEndpoint = service.newEndpoint(philipsHueHubHost, philipsHueHubUser, getLog());
     addManagedResource(philipsHueHubEndpoint);
 

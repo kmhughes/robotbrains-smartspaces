@@ -16,14 +16,14 @@
 
 package org.robotbrains.house.sensors;
 
-import io.smartspaces.SmartSpacesException;
-import io.smartspaces.messages.ByteMessageTranslator;
-
-import com.google.common.collect.Maps;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Map;
+
+import com.google.common.collect.Maps;
+
+import io.smartspaces.SmartSpacesException;
+import io.smartspaces.messaging.codec.MessageDecoder;
 
 /**
  * A translator for byte messages from the XBee radio sensor module.
@@ -33,11 +33,11 @@ import java.util.Map;
  * 
  * @author Keith M. Hughes
  */
-public class RoomSensorMapByteMessageTranslator implements
-    ByteMessageTranslator<Map<String, Object>> {
+public class RoomSensorMapByteMessageTranslator
+    implements MessageDecoder<Map<String, Object>, byte[]> {
 
   @Override
-  public Map<String, Object> translate(byte[] message) throws SmartSpacesException {
+  public Map<String, Object> decode(byte[] message) throws SmartSpacesException {
     Map<String, Object> result = Maps.newHashMap();
     ByteBuffer data = ByteBuffer.wrap(message).order(ByteOrder.LITTLE_ENDIAN);
 

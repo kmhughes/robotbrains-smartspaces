@@ -16,13 +16,13 @@
 
 package org.robotbrains.house.sensors;
 
-import io.smartspaces.service.comm.serial.xbee.RxResponseXBeeFrame;
-import io.smartspaces.service.comm.serial.xbee.XBeeCommunicationEndpoint;
-import io.smartspaces.service.comm.serial.xbee.XBeeResponseListenerSupport;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 
-import java.util.Map;
+import io.smartspaces.service.comm.serial.xbee.RxResponseXBeeFrame;
+import io.smartspaces.service.comm.serial.xbee.XBeeCommunicationEndpoint;
+import io.smartspaces.service.comm.serial.xbee.XBeeResponseListenerSupport;
 
 /**
  * An XBee response handler which translates room sensor messages.
@@ -54,7 +54,7 @@ public class RoomSensorXBeeHandler extends XBeeResponseListenerSupport {
   }
 
   private void translateMessage(RxResponseXBeeFrame response) {
-    Map<String, Object> sensorData = translator.translate(response.getReceivedData());
+    Map<String, Object> sensorData = translator.decode(response.getReceivedData());
     log.info(String.format("Radio %s: Data %s", response.getAddress64(), sensorData));
   }
 }

@@ -16,16 +16,16 @@
 
 package org.robotbrains.opensoundcontrol.routable.supercollider.activity;
 
+import java.util.Map;
+
 import io.smartspaces.activity.impl.ros.BaseRoutableRosActivity;
 import io.smartspaces.service.control.opensoundcontrol.OpenSoundControlClientCommunicationEndpoint;
 import io.smartspaces.service.control.opensoundcontrol.OpenSoundControlClientCommunicationEndpointService;
 import io.smartspaces.util.SmartSpacesUtilities;
 
-import java.util.Map;
-
 /**
- * A Smart Spaces activity that controls an Supercollider synthesizer
- * from analog signals coming over a route.
+ * A Smart Spaces activity that controls an Supercollider synthesizer from
+ * analog signals coming over a route.
  *
  * @author Keith M. Hughes
  */
@@ -122,8 +122,8 @@ public class SuperColliderOpenSoundControlRoutableActivity extends BaseRoutableR
   /**
    * The synthdef to load. It is found in the install directory.
    */
-  public static final String SYNTH_DEF_LOCATION = "${activity.installdir}/" + SYNTH_NAME
-      + ".scsyndef";
+  public static final String SYNTH_DEF_LOCATION =
+      "${activity.installdir}/" + SYNTH_NAME + ".scsyndef";
 
   /**
    * The synth argument for controlling the frequency.
@@ -164,24 +164,21 @@ public class SuperColliderOpenSoundControlRoutableActivity extends BaseRoutableR
   public void onActivitySetup() {
 
     OpenSoundControlClientCommunicationEndpointService endpointService =
-        getSpaceEnvironment().getServiceRegistry().getRequiredService(
-            OpenSoundControlClientCommunicationEndpointService.SERVICE_NAME);
+        getSpaceEnvironment().getServiceRegistry()
+            .getRequiredService(OpenSoundControlClientCommunicationEndpointService.SERVICE_NAME);
 
-    String remoteHost =
-        getConfiguration().getRequiredPropertyString(
-            CONFIGURATION_PROPERTY_SUPERCOLLIDER_SERVER_HOST);
+    String remoteHost = getConfiguration()
+        .getRequiredPropertyString(CONFIGURATION_PROPERTY_SUPERCOLLIDER_SERVER_HOST);
     int remotePort = 57110;
 
     controlEndpoint = endpointService.newUdpEndpoint(remoteHost, remotePort, getLog());
     addManagedResource(controlEndpoint);
 
-    frequencyBase =
-        getConfiguration().getRequiredPropertyDouble(CONFIGURATION_PROPERTY_OSC_FREQUENCY_BASE)
-            .floatValue();
-    signalMultiplier =
-        getConfiguration().getRequiredPropertyDouble(CONFIGURATION_PROPERTY_OSC_SIGNAL_MULTIPLER)
-            .floatValue()
-            / getConfiguration().getRequiredPropertyInteger(CONFIGURATION_PROPERTY_ANALOG_MAX);
+    frequencyBase = getConfiguration()
+        .getRequiredPropertyDouble(CONFIGURATION_PROPERTY_OSC_FREQUENCY_BASE).floatValue();
+    signalMultiplier = getConfiguration()
+        .getRequiredPropertyDouble(CONFIGURATION_PROPERTY_OSC_SIGNAL_MULTIPLER).floatValue()
+        / getConfiguration().getRequiredPropertyInteger(CONFIGURATION_PROPERTY_ANALOG_MAX);
   }
 
   @Override
@@ -200,7 +197,7 @@ public class SuperColliderOpenSoundControlRoutableActivity extends BaseRoutableR
   }
 
   @Override
-  public void onNewInputJson(String channelName, Map<String, Object> message) {
+  public void onNewInputMessage(String channelName, Map<String, Object> message) {
     getLog().debug("Got message on input channel " + channelName);
     int analog1 = (Integer) message.get(MESSAGE_FIELD_ANALOG);
     int analog2 = (Integer) message.get(MESSAGE_FIELD_ANALOG2);
@@ -245,8 +242,8 @@ public class SuperColliderOpenSoundControlRoutableActivity extends BaseRoutableR
       @Override
       public void run() {
         SmartSpacesUtilities.delay(500);
-        controlEndpoint
-            .sendRequestMessage(SUPERCOLLIDER_OSC_ADDRESS_SYNTH_NEW, SYNTH_NAME, NODE_ID);
+        controlEndpoint.sendRequestMessage(SUPERCOLLIDER_OSC_ADDRESS_SYNTH_NEW, SYNTH_NAME,
+            NODE_ID);
       }
     });
   }
