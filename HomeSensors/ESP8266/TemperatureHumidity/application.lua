@@ -33,8 +33,8 @@ local function do_sampling()
 
   if status == dht.OK then
     message = "{ \"sensor\": \"" .. config.MQTT_CLIENTID ..
-        "\", \"temperature\": " .. temperature ..
-        ", \"humidity\": " .. humidity .. "}"
+        "\", \"data\": {\"temperature\": " .. temperature ..
+        ", \"humidity\": " .. humidity .. "}}"
 
     print(message)
     mqtt_client:publish(config.MQTT_TOPIC, message, 
