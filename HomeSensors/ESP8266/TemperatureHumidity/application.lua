@@ -33,8 +33,10 @@ local function do_sampling()
 
   if status == dht.OK then
     message = "{ \"sensor\": \"" .. config.MQTT_CLIENTID ..
-        "\", \"data\": {\"temperature\": " .. temperature ..
-        ", \"humidity\": " .. humidity .. "}}"
+        "\", \"data\": {\"temperature\": { \"type\": \"temperature\", \"value\": " .. 
+        temperature ..
+        "}, \"humidity\": { \"type\": \"humidity\", \"value\": " .. 
+        humidity .. "}}}"
 
     print(message)
     mqtt_client:publish(config.MQTT_TOPIC, message, 
@@ -49,15 +51,18 @@ end
 
 -- MQTT is now connected to the broker.
 local function mqtt_connected(client)
-  print("Connected to MQTT broker")
+  print("Connected to MQTT broker " .. config.MQTT_HOST)
 
-  -- Start the timer going for sampling.
+  -- Do a sample immediately.
+  do_sampling();
+
+  -- Start the timer going for subsequent sampling.
   tmr.start(config.TIMER_SENSOR_SAMPLE)
 end
 
 -- Have lost the connection to the MQTT broker.
 local function mqtt_lost_connection(client) 
-  print("Lost connection to MQTT broker")
+  print("Lost connection to MQTT broker " .. config.MQTT_HOST)
 
   -- Stop the sample timer.
   tmr.stop(config.TIMER_SENSOR_SAMPLE)
@@ -65,7 +70,7 @@ end
 
 -- MQTT is has connected to the broker for the first time.
 local function mqtt_initial_connected(client)
-  print("Initial Connection to MQTT broker")
+  print("Initial Connection to MQTT broker " .. config.MQTT_HOST)
   
   tmr.register(config.TIMER_SENSOR_SAMPLE, 
       config.SENSOR_SAMPLE_DELAY, 

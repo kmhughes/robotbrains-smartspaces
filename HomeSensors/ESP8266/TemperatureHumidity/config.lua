@@ -60,7 +60,7 @@ module.MQTT_QOS = 0
 module.DHT_PIN = 1
 
 -- How often to sample the sensors, in milliseconds
-module.SENSOR_SAMPLE_DELAY = 5 * 1000
+module.SENSOR_SAMPLE_DELAY = 2 * 60 * 1000
 
 -- The ESP timer to use for checking for WIFI connection.
 module.TIMER_WIFI_CONNECTION = 1
